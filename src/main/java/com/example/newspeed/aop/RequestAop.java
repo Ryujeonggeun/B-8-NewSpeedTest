@@ -1,10 +1,15 @@
 package com.example.newspeed.aop;
 
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+@Slf4j
 @Aspect
 @Component
 public class RequestAop {
@@ -14,15 +19,16 @@ public class RequestAop {
     //시점
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         //다음 메서드로 진행됨
-        Long start = System.currentTimeMillis();
-        System.out.println("START: " + joinPoint.toString());
-        try {
-            return joinPoint.proceed();
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpServletRequest request = attributes.getRequest();
+            log.info("Request URL: " + request.getRequestURL());
+            log.info("HTTP Method : " + request.getMethod());
 
-        } finally {
-            long finish = System.currentTimeMillis();
-            long timeMs = finish - start;
-            System.out.println("END: "  + joinPoint.toString() + " " + timeMs + "ms");
+        } else {
+            log.info("인가 처리 안됨");
+        }
+        return joinPoint.proceed();
         }
     }
-}
+
