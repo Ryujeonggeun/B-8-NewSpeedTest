@@ -116,6 +116,7 @@ class SignUpRequestDtoTest {
         // Then
         assertEquals(1, violations.size());
         assertEquals("널이어서는 안됩니다", violations.iterator().next().getMessage());
+
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.example.newspeed.entity;
 
 import com.example.newspeed.dto.ContentDto;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+
 public class Comment extends Timestamped{
 
     @Id
